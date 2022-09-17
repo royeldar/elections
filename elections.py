@@ -69,7 +69,7 @@ def parse_expc(filename, encoding):
             else:
                 # for some reason, this field is zero
                 assert city == 'מעטפות חיצוניות'
-    return votes_per_city, turnout_per_city
+    return parties, votes_per_city, turnout_per_city
 
 
 EXPC_CSV_URL = "https://media24.bechirot.gov.il/files/expc.csv"
@@ -77,7 +77,7 @@ ENCODING = "cp1255" # windows-1255
 
 def main(argv):
     expc_csv_filename, _ = urllib.request.urlretrieve(EXPC_CSV_URL)
-    votes_per_city, turnout_per_city = parse_expc(expc_csv_filename, ENCODING)
+    parties, votes_per_city, turnout_per_city = parse_expc(expc_csv_filename, ENCODING)
 
 
 if __name__ == "__main__":
