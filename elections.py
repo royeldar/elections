@@ -10,6 +10,8 @@ TOTAL_VOTES = 'מצביעים'
 INVALID_VOTES = 'פסולים'
 VALID_VOTES = 'כשרים'
 
+ADDITIONAL_BALLOTS = 'מעטפות חיצוניות'
+
 EXPC_FIELDNAMES = [
     'סמל ועדה',
     CITY,
@@ -68,7 +70,7 @@ def parse_expc(filename, encoding):
                 turnout_per_city[city] = turnout
             else:
                 # for some reason, this field is zero
-                assert city == 'מעטפות חיצוניות'
+                assert city == ADDITIONAL_BALLOTS
     return parties, votes_per_city, turnout_per_city
 
 
