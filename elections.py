@@ -95,7 +95,7 @@ def get_party_votes(votes_per_city, party):
 
 
 ELECTORAL_THRESHOLD_PERCENTAGE = 3.25
-NUMBER_OF_MKS = 120
+NUMBER_OF_SEATS = 120
 # see https://main.knesset.gov.il/About/Lexicon/Pages/seats.aspx
 def calculate_seats(votes_per_party, alliances):
     parties = list(votes_per_party.keys())
@@ -106,9 +106,9 @@ def calculate_seats(votes_per_party, alliances):
     # discard failed parties that didn't pass the electoral threshold
     votes_per_party = {party : votes for party, votes in votes_per_party.items() if party not in failed_parties} # F
     total_votes = sum(votes_per_party.values()) # D
-    votes_per_seat = total_votes // NUMBER_OF_MKS # E
+    votes_per_seat = total_votes // NUMBER_OF_SEATS # E
     seats_per_party = {party : votes // votes_per_seat for party, votes in votes_per_party.items()} # G
-    remaining_seats = NUMBER_OF_MKS - sum(seats_per_party.values()) # H
+    remaining_seats = NUMBER_OF_SEATS - sum(seats_per_party.values()) # H
     # discard electoral alliances with parties that didn't pass the threshold
     is_failed_alliance = lambda alliance: any(party in failed_parties for party in alliance)
     alliances = [alliance for alliance in alliances if not is_failed_alliance(alliance)]
