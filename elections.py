@@ -120,7 +120,9 @@ def calculate_seats(votes_per_party, alliances):
     parties_and_alliances = list(seats_distribution.keys())
     # split the remaining seats among the parties (and electoral alliances)
     while remaining_seats > 0:
-        measure_per_party = {party : votes_distribution[party] / (seats_distribution[party] + 1) for party in parties_and_alliances} # I
+        # parties that got half of the number of seats but less than half of the total votes, cannot get more seats
+        is_invalid_party = lambda party: seats_distribution[party] >= NUMBER_OF_SEATS // 2 and votes_distribution[party] < total_votes // 2
+        measure_per_party = {party : votes_distribution[party] / (seats_distribution[party] + 1) for party in parties_and_alliances if not is_invalid_party(party)} # I
         chosen_party = max(measure_per_party, key=measure_per_party.get)
         seats_distribution[chosen_party] += 1
         remaining_seats -= 1
@@ -134,7 +136,9 @@ def calculate_seats(votes_per_party, alliances):
         remaining_seats = shared_seats - sum(individual_seats.values())
         # split the remaining seats among the individual parties in the electoral alliance
         while remaining_seats > 0:
-            individual_measure = {party : votes_per_party[party] / (individual_seats[party] + 1) for party in alliance} # M
+            # parties that got half of the number of seats but less than half of the total votes, cannot get more seats
+            is_invalid_party = lambda party: individual_seats[party] >= NUMBER_OF_SEATS // 2 and votes_per_party[party] < total_votes // 2
+            individual_measure = {party : votes_per_party[party] / (individual_seats[party] + 1) for party in alliance if not is_invalid_party(party)} # M
             chosen_party = max(individual_measure, key=individual_measure.get)
             individual_seats[chosen_party] += 1
             remaining_seats -= 1
