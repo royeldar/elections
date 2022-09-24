@@ -3,6 +3,7 @@
 import sys
 import csv
 import urllib.request
+import json
 
 CITY = 'שם ישוב'
 ELLIGIBLE = 'בזב'
@@ -154,8 +155,8 @@ EXPC_CSV_URL = "https://media{N}.bechirot.gov.il/files/expc.csv"
 ENCODING = "cp1255" # windows-1255
 
 def main(argv):
-    assert len(argv) == 3, \
-        f"Usage: {argv[0]} <N> <alliances.txt>"
+    assert len(argv) == 4, \
+        f"Usage: {argv[0]} <N> <alliances.txt> <results.json>"
 
     expc_csv_filename, _ = urllib.request.urlretrieve(EXPC_CSV_URL.format(N=argv[1]))
     alliances_filename = argv[2]
@@ -163,10 +164,10 @@ def main(argv):
     electoral_alliances = parse_alliances(alliances_filename, 'utf-8')
     votes_per_party = {party : get_party_votes(votes_per_city, party) for party in parties}
     seats_per_party = calculate_seats(votes_per_party, electoral_alliances)
-    seats_distribution = list(seats_per_party.items())
-    seats_distribution.sort(key=lambda x:x[1], reverse=True)
-    for party, seats in seats_distribution:
-        print(f"{party}: {seats}")
+    results_filename = argv[3]
+    with open(results_filename, 'w', encoding='utf-8') as f:
+        json.dump(seats_per_party, f, ensure_ascii=False)
+
 
 if __name__ == "__main__":
     main(sys.argv)
