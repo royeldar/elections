@@ -150,15 +150,15 @@ def calculate_seats(votes_per_party, alliances):
     return seats_per_party
 
 
-EXPC_CSV_URL = "https://media24.bechirot.gov.il/files/expc.csv"
+EXPC_CSV_URL = "https://media{N}.bechirot.gov.il/files/expc.csv"
 ENCODING = "cp1255" # windows-1255
 
 def main(argv):
-    assert len(argv) == 2, \
-        f"Usage: {argv[0]} <alliances.txt>"
+    assert len(argv) == 3, \
+        f"Usage: {argv[0]} <N> <alliances.txt>"
 
-    expc_csv_filename, _ = urllib.request.urlretrieve(EXPC_CSV_URL)
-    alliances_filename = argv[1]
+    expc_csv_filename, _ = urllib.request.urlretrieve(EXPC_CSV_URL.format(N=argv[1]))
+    alliances_filename = argv[2]
     parties, votes_per_city, turnout_per_city = parse_expc(expc_csv_filename, ENCODING)
     electoral_alliances = parse_alliances(alliances_filename, 'utf-8')
     votes_per_party = {party : get_party_votes(votes_per_city, party) for party in parties}
