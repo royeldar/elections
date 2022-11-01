@@ -152,7 +152,7 @@ def calculate_seats(votes_per_party, alliances):
 
 
 EXPC_CSV_URL = "https://media{N}.bechirot.gov.il/files/expc.csv"
-ENCODING = "cp1255" # windows-1255
+ENCODING = "utf-8-sig" # utf-8 with BOM
 
 def main(argv):
     assert len(argv) == 4, \
